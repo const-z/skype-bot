@@ -1,0 +1,25 @@
+{
+  "name": "skype-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "botbuilder": "^3.4.4",
+    "hapi": "^16.0.1",
+    "restify": "^4.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/const-z/skype-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/const-z/skype-bot/issues"
+  },
+  "homepage": "https://github.com/const-z/skype-bot#readme"
+}
