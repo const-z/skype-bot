@@ -5,7 +5,6 @@
   "main": "app.js",
   "dependencies": {
     "botbuilder": "^3.4.4",
-    "hapi": "^16.0.1",
     "restify": "^4.3.0"
   },
   "devDependencies": {},
