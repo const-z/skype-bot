@@ -93,6 +93,9 @@ bot.dialog("ping", session => {
 
 setInterval(() => {
 	Object.keys(addresses).map(key => {
-		bot.beginDialog(addresses[key], "ping");
+		bot.isInConversation(addresses[key], (err, date)=>{
+			console.log("CONVERSATION", err, date);
+			bot.beginDialog(addresses[key], "ping");
+		});
 	});
 }, 5000);
