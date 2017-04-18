@@ -3,7 +3,7 @@
 let config = null;
 
 try {
-	config = require("./config-custom.js");
+	config = require("./config-custom");
 } catch (err) {
 	null;
 }
