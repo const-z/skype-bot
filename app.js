@@ -17,8 +17,7 @@ server.listen(config.server.port, "localhost", () => {
 // Create chat bot
 const connector = new builder.ChatConnector({
 	appId: config.bot.appId,
-	appPassword: config.bot.appPassword,
-	serviceUrl: "https://smba.trafficmanager.net"
+	appPassword: config.bot.appPassword
 });
 
 const bot = new builder.UniversalBot(connector, [
@@ -28,6 +27,13 @@ const bot = new builder.UniversalBot(connector, [
 ]);
 
 server.post('/api/messages', connector.listen());
+
+//=========================================================
+
+bot.on("receive", (message) => {
+    console.log("receive", message);
+
+});
 
 //=========================================================
 // Bots Dialogs
@@ -53,19 +59,19 @@ bot.dialog("rootMenu", [
 ]).reloadAction("showMenu", null, { matches: /^(menu|back)/i });
 
 bot.dialog("file", session => {
-	// const fs = require("fs");
-	// let data = fs.readFileSync("/home/ubuntu/test.pdf");
-	// data = new Buffer(data).toString("base64");
+	session.sendTyping();
 	var msg = new builder.Message(session)
 		.addAttachment({
 			contentUrl: "https://www.cryptopro.ru/sites/default/files/products/pdf/files/CryptoProPDF_UserGuide.pdf",
-			// content: data,
 			contentType: "application/pdf",
 			name: "test.pdf"
 		});
 	session.send(msg);
 	session.endDialog();
-	// var contentType = "application/pdf";
-	// var attachment = new Attachment(contentType, "https://localhost/api/documents.download");
-	// var response = await client.GetAsync("https://localhost/api/documents.download");
 }).triggerAction({ matches: /file/i });
+
+// setInterval(()=>{
+// 	// connector.startConversation()
+// 	bot.beginDialog();
+// 	bot.send(new Date().toISOString());
+// }, 5000);
