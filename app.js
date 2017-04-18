@@ -31,8 +31,11 @@ server.post('/api/messages', connector.listen());
 //=========================================================
 
 bot.on("receive", (message) => {
-    console.log("receive", message);
+	// console.log("receive", message);
+});
 
+bot.on("conversationUpdate", (message) => {
+	// console.log("conversationUpdate", message);
 });
 
 //=========================================================
@@ -70,8 +73,26 @@ bot.dialog("file", session => {
 	session.endDialog();
 }).triggerAction({ matches: /file/i });
 
-// setInterval(()=>{
-// 	// connector.startConversation()
-// 	bot.beginDialog();
-// 	bot.send(new Date().toISOString());
-// }, 5000);
+let addresses = {};
+
+bot.dialog("subscription", session => {
+	addresses[session.message.address.channelId + "-" + session.message.address.user.id] = {
+		bot: session.message.address.bot,
+		channelId: session.message.address.channelId,
+		user: session.message.address.user,
+		serviceUrl: session.message.address.serviceUrl,
+		useAuth: true
+	};
+	session.send("added to subscriptions");
+}).triggerAction({ matches: /subs/i });
+
+bot.dialog("ping", session => {
+	session.send(new Date().toISOString());
+	session.endDialog();
+}).triggerAction({ matches: /ping/i });
+
+setInterval(() => {
+	Object.keys(addresses).map(key => {
+		bot.beginDialog(addresses[key], "ping");
+	});
+}, 5000);
