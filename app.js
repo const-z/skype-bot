@@ -121,7 +121,6 @@ bot.dialog("auth", [
 	}
 ]);
 
-
 bot.dialog("file", session => {
 	session.sendTyping();
 	var msg = new builder.Message(session)
