@@ -71,9 +71,27 @@ bot.dialog("greetings", [
 // Bots Dialogs
 //=========================================================
 
+// bot.dialog("rootMenu", [
+// 	session => {
+// 		builder.Prompts.choice(session, "", ["get file"], { listStyle: builder.ListStyle.button });
+// 	},
+// 	(session, results) => {
+// 		switch (results.response.index) {
+// 			case 0:
+// 				session.beginDialog("file");
+// 				break;
+// 			default:
+// 				session.endDialog();
+// 				break;
+// 		}
+// 	},
+// 	session => {
+// 		session.replaceDialog("rootMenu");
+// 	}
+// ]).reloadAction("showMenu", null, { matches: /^(menu|back)/i });
+
 bot.dialog("/", [
 	session => {
-		delete addresses[session.message.address.channelId + "-" + session.message.address.user.id];
 		if (!isAuth(session.message.address.channelId + "-" + session.message.address.user.id)) {
 			session.beginDialog("auth");
 		}
@@ -115,10 +133,15 @@ bot.dialog("file", session => {
 	session.send(msg).endDialog();
 }).triggerAction({ matches: /file/i });
 
-bot.dialog("subscription", session => {
+bot.dialog("subscribe", session => {
 	addresses[session.message.address.channelId + "-" + session.message.address.user.id] = session.message.address;
 	session.send("added to subscriptions");
 }).triggerAction({ matches: /subs/i });
+
+bot.dialog("unsubscribe", session => {
+	delete addresses[session.message.address.channelId + "-" + session.message.address.user.id];
+	session.send("removed from subscriptions list");
+}).triggerAction({ matches: /unsubs/i });
 
 bot.dialog("ping", session => {
 	session
